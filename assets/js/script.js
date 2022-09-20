@@ -1,6 +1,7 @@
 var startBtn = document.querySelector('.start-button')
 var wordsBlanksEl = document.querySelector('.word-blanks') 
 var scoreEl = document.querySelector('.score')
+var timerEl = document.querySelector('.timer-count')
 
 var validChars = "abcdefghijklmnopqrstuvwxyz"
 // var for array of words
@@ -10,7 +11,22 @@ var guessedCharacters = []
 // score variable
 var score = 0
 // time left variable
+var timeLeft = 15
+var intervalId
 
+function startCountDown() {
+    clearInterval(intervalId)
+    intervalId = setInterval(function() {
+        //decrease timeLeft
+        timeLeft--
+        // update timerEl
+        timerEl.textContent = timeLeft
+        if (timeLeft === 0) {
+            clearInterval(intervalId)
+            wordsBlanksEl.textContent = "Game over, your score is " + score
+        }
+    }, 1000)
+}
 //function to check if the typed word is correct to increase score
 function checkWord() {
     // compare word and wordBlanksEl.textContent (2nd shows spaces between letters in console)
@@ -56,10 +72,12 @@ function renderCharacters() {
 }
 
 function startRound() {
+    guessedCharacters = []
     // get random word from words array
     var randomIndex = Math.floor(Math.random() * words.length)
     word = words[randomIndex]
     renderCharacters()
+    startCountDown()
 
 }
 //addEventListener to start button (click)
