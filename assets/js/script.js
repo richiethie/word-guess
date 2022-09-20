@@ -1,5 +1,6 @@
 var startBtn = document.querySelector('.start-button')
 var wordsBlanksEl = document.querySelector('.word-blanks') 
+var scoreEl = document.querySelector('.score')
 
 var validChars = "abcdefghijklmnopqrstuvwxyz"
 // var for array of words
@@ -7,11 +8,22 @@ var words = ["javascript", "variable", "function", "object", "python", "localsto
 var word
 var guessedCharacters = []
 // score variable
+var score = 0
 // time left variable
+
+//function to check if the typed word is correct to increase score
+function checkWord() {
+    // compare word and wordBlanksEl.textContent (2nd shows spaces between letters in console)
+    var wordFromDOM = wordsBlanksEl.textContent.split(' ').join('')
+    if (word === wordFromDOM) {
+        score++
+        scoreEl.textContent = score
+        startRound()
+    }
+}
 
 //function for when key is pressed
 function handleKeyDown(event) {
-    console.log(event.key)
     if (validChars.includes(event.key)) {
         // keep track of character that was guessed, var guessedCharacters = []
         // push key press into guessedCharacters array
@@ -40,6 +52,7 @@ function renderCharacters() {
     }
     // set textContent of wordBlanksEl to be str
     wordsBlanksEl.textContent = str.trim()
+    checkWord()
 }
 
 function startRound() {
